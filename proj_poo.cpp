@@ -161,7 +161,7 @@ public:
     void sort_top();
     void comp_tconexe();
     int tconex();
-    const Graf & operator +(const Graf &c);
+    friend Graf operator +(const Graf &c,const Graf &d);
 
     Graf &operator =(const Graf &d)
     {
@@ -367,14 +367,17 @@ int Graf::tconex(){
     return 1;
 }
 
-const Graf& Graf::operator +(const Graf &c){
+Graf operator +(const Graf &c,const Graf &d){
     Graf rez;
     rez.vf=c.vf;
     int i,j;
+    rez.ma=new int*[rez.vf+1];
+    for(i=1;i<=rez.vf;i++)
+        rez.ma[i]=new int[rez.vf+1];
     rez.V=new Lista[rez.vf+1];
     for(i=1;i<=rez.vf;i++)
         for(j=1;j<=rez.vf;j++)
-           if(this->ma[i][j]||c.ma[i][j])
+           if(d.ma[i][j]||c.ma[i][j])
               rez.ma[i][j]=1;
             else rez.ma[i][j]=0;
     for(i=1;i<=rez.vf;i++){
