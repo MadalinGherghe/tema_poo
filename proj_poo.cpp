@@ -162,6 +162,7 @@ public:
     void comp_tconexe();
     int tconex();
     friend Graf operator +(const Graf &c,const Graf &d);
+    Graf transpus(const Graf &);
 
     Graf &operator =(const Graf &d)
     {
@@ -174,6 +175,33 @@ public:
     }
 
 };
+
+Graf Graf::transpus(const Graf &d)
+{
+    Graf r;
+    r.vf=d.vf;
+    r.V= new Lista[r.vf+1];
+    int i,j,k;
+    r.ma=new int*[r.vf+1];
+    for(i=1;i<=r.vf;i++)
+        r.ma[i]=new int[r.vf+1];
+    for(i=1;i<=r.vf;i++)
+        for(j=1;j<=r.vf;j++)
+            r.ma[i][j]=0;
+    for(i=1;i<=r.vf;i++)
+        for(j=1;j<=r.vf;j++)
+           if(d.ma[j][i]==0&&j!=i)r.ma[i][j]=1;
+    for(i=1;i<=r.vf;i++)
+    {
+        r.V[i].nd=i;
+        k=0;
+        for(j=1;j<=r.vf;j++)
+            if(r.ma[i][j]){r.V[i].addElement(j);
+                           k++;}
+        r.V[i].nr=k;
+    }
+    return r;
+}
 
 Graf::~Graf(){
     int i;
@@ -400,6 +428,10 @@ int main()
     if(g.tconex())cout<<"\nGraful este tare conex\n";
       else cout<<"\nGraful NU este tare conex\n";
     g.sort_top();
+
+    Graf h;
+    h=g.transpus(g);
+    cout<<"\n\n Mat trans:\n"<<h;
 
     /*
     Graf *u;
